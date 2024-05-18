@@ -1,5 +1,5 @@
 # zero-to-mastery-pytorch-tutorial
 > PyTorch 2.3.0
 > 
-> Python 3.8-3.11
+> Python 3.11
 
