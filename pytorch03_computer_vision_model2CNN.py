@@ -3,6 +3,7 @@ import torch
 from torch import nn
 from torchvision import datasets
 from torchvision.transforms import ToTensor
+import matplotlib.pyplot as plt
 
 # %%
 # Setup device agnostic code
