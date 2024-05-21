@@ -241,6 +241,12 @@ plot_decision_boundary(model_4, X_blob_test, y_blob_test)
 
 # 9. More classification evaluation metrics 
 # %%
+try:
+    from torchmetrics import Accuracy
+    print(f"torchmetrics version: {torchmetrics.__version__}")
+except:
+    print("Please install torchmetrics - pip install torchmetrics==0.9.3")
+# %%
 from torchmetrics import Accuracy
 #!pip install torchmetrics==0.9.3 # this is the version we're using in this notebook (later versions exist here: https://torchmetrics.readthedocs.io/en/stable/generated/CHANGELOG.html#changelog)
 
