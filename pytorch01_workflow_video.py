@@ -18,7 +18,8 @@ torch.__version__
 
 # %% 
 # Setup device agnostic code
-device = "cuda" if torch.cuda.is_available() else "cpu"
+#device = "cuda" if torch.cuda.is_available() else "cpu"
+device = "cpu"
 print(f"Using device: {device}")
 
 # %% Data (preparing and loading)
