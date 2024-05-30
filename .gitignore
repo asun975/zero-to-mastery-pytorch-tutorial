@@ -8,3 +8,4 @@ data/FashionMNIST/raw/train-images-idx3-ubyte.gz
 data/FashionMNIST/raw/train-labels-idx1-ubyte
 data/FashionMNIST/raw/train-labels-idx1-ubyte.gz
 __pycache__/helper_functions.cpython-311.pyc
+01_pytorch_workflow_model_0.pth
