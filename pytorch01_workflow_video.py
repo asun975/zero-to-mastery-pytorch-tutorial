@@ -20,8 +20,7 @@ torch.__version__
 
 # %% 
 # Setup device agnostic code
-#device = "cuda" if torch.cuda.is_available() else "cpu"
-device = "cpu"
+device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using device: {device}")
 
 # %% Data (preparing and loading)
@@ -96,7 +95,7 @@ plot_predictions()
 torch.manual_seed(42)
 
 # Create an instance of the model (this is a subclass of nn.Module that contains nn.Parameter(s))
-model_0 = LinearRegressionModel()
+model_0 = LinearRegressionModel().to(device)
 
 # Check the nn.Parameter(s) within the nn.Module subclass we created
 list(model_0.parameters())
