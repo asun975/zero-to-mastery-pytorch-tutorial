@@ -1,9 +1,9 @@
-import torch
 from torch import nn
 
-# Baseline model
+
 class CircleModelV0(nn.Module):
     def __init__(self):
+        """Baseline model."""
         super().__init__()
         # 2. Create 2 nn.Linear layers capable of handling X and y input and output shapes
         self.layer_1 = nn.Linear(in_features=2, out_features=5) # takes in 2 features (X), produces 5 features
@@ -13,10 +13,11 @@ class CircleModelV0(nn.Module):
     def forward(self, x):
         # Return the output of layer_2, a single feature, the same shape as y
         return self.layer_2(self.layer_1(x)) # computation goes through layer_1 first then the output of layer_1 goes through layer_2
-    
-# Modify hyperparameters in V0    
+
+
 class CircleModelV1(nn.Module):
     def __init__(self):
+        """Modify hyperparameters from V0"""
         super().__init__()
         self.layer_1 = nn.Linear(in_features=2, out_features=10)
         self.layer_2 = nn.Linear(in_features=10, out_features=10) # extra layer
@@ -30,10 +31,11 @@ class CircleModelV1(nn.Module):
         # z = self.layer_3(z)
         # return z
         return self.layer_3(self.layer_2(self.layer_1(x)))
-    
-# Build model with non-linear activation function
+
+ 
 class CircleModelV2(nn.Module):
     def __init__(self):
+        """Build model with non-linear activation functions"""
         super().__init__()
         self.layer_1 = nn.Linear(in_features=2, out_features=10)
         self.layer_2 = nn.Linear(in_features=10, out_features=10)
@@ -47,3 +49,33 @@ class CircleModelV2(nn.Module):
       # Intersperse the ReLU activation function between layers
        return self.layer_3(self.relu(self.layer_2(self.relu(self.layer_1(x)))))
 
+
+class BlobModel(nn.Module):
+    def __init__(self, input_features, output_features, hidden_units=8):
+        """
+        Initializes all required hyperparameters for a multi-class 
+        classification model.
+
+        Args:
+            input_features (int): Number of input features to the model.
+            out_features (int): Number of output features of the model
+              (how many classes there are).
+            hidden_units (int): Number of hidden units between layers, 
+            default 8.
+        """
+        super().__init__()
+        self.linear_layer_stack = nn.Sequential(
+            nn.Linear(in_features=input_features, out_features=hidden_units),
+            # nn.ReLU(), 
+            # <- does our dataset require non-linear layers? 
+            # (try uncommenting and see if the results change)
+            nn.Linear(in_features=hidden_units, out_features=hidden_units),
+            # nn.ReLU(), 
+            # <- does our dataset require non-linear layers? 
+            # (try uncommenting and see if the results change)
+            nn.Linear(in_features=hidden_units, out_features=output_features), 
+            # how many classes are there?
+        )
+    
+    def forward(self, x):
+        return self.linear_layer_stack(x)
