@@ -18,12 +18,12 @@ import torch
 import matplotlib.pyplot as plt
 from sklearn.datasets import make_blobs
 from sklearn.model_selection import train_test_split
-
+#%%
 # Set the hyperparameters for data creation
 NUM_CLASSES = 4
 NUM_FEATURES = 2
 RANDOM_SEED = 42
-
+#%%
 # 1. Create multi-class data
 X_blob, y_blob = make_blobs(n_samples=1000,
     n_features=NUM_FEATURES, # X features
@@ -49,24 +49,16 @@ plt.figure(figsize=(10, 7))
 plt.scatter(X_blob[:, 0], X_blob[:, 1], c=y_blob, cmap=plt.cm.RdYlBu)
 
 # %%
+import torch
 # Create device agnostic code
 device = "cuda" if torch.cuda.is_available() else "cpu"
 device
 
 # %%
-from torch import nn
-
+from models.classification_utils import BlobModel
 # Build model
-class BlobModel(nn.Module):
+"""class BlobModel(nn.Module):
     def __init__(self, input_features, output_features, hidden_units=8):
-        """Initializes all required hyperparameters for a multi-class classification model.
-
-        Args:
-            input_features (int): Number of input features to the model.
-            out_features (int): Number of output features of the model
-              (how many classes there are).
-            hidden_units (int): Number of hidden units between layers, default 8.
-        """
         super().__init__()
         self.linear_layer_stack = nn.Sequential(
             nn.Linear(in_features=input_features, out_features=hidden_units),
@@ -77,7 +69,7 @@ class BlobModel(nn.Module):
         )
     
     def forward(self, x):
-        return self.linear_layer_stack(x)
+        return self.linear_layer_stack(x)"""
 
 # Create an instance of BlobModel and send it to the target device
 model_4 = BlobModel(input_features=NUM_FEATURES, 
@@ -241,6 +233,7 @@ plot_decision_boundary(model_4, X_blob_test, y_blob_test)
 
 # 9. More classification evaluation metrics 
 # %%
+import torchmetrics
 try:
     from torchmetrics import Accuracy
     print(f"torchmetrics version: {torchmetrics.__version__}")
