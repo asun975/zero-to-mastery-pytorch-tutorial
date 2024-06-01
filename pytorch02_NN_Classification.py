@@ -82,7 +82,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 device
 # %%
 # 1. Construct a model class that subclasses nn.Module
-class CircleModelV0(nn.Module):
+"""class CircleModelV0(nn.Module):
     def __init__(self):
         super().__init__()
         # 2. Create 2 nn.Linear layers capable of handling X and y input and output shapes
@@ -92,9 +92,12 @@ class CircleModelV0(nn.Module):
     # 3. Define a forward method containing the forward pass computation
     def forward(self, x):
         # Return the output of layer_2, a single feature, the same shape as y
-        return self.layer_2(self.layer_1(x)) # computation goes through layer_1 first then the output of layer_1 goes through layer_2
-
+        return self.layer_2(self.layer_1(x)) # computation goes through layer_1 first then the output of layer_1 goes through layer_2"""
+from models.classification_utils import CircleModelV0
 # 4. Create an instance of the model and send it to target device
+# Setup device agnostic code
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"Using device: {device}")
 model_0 = CircleModelV0().to(device)
 model_0
 # %%
@@ -344,8 +347,9 @@ That explains the 50% accuracy. Since our data is circular, drawing a straight l
 In machine learning terms, our model is underfitting, meaning it's not learning predictive patterns from the data.
 """
 # %%
+from models.classification_utils import CircleModelV1
 # Change hyperparameters
-class CircleModelV1(nn.Module):
+"""class CircleModelV1(nn.Module):
     def __init__(self):
         super().__init__()
         self.layer_1 = nn.Linear(in_features=2, out_features=10)
@@ -359,8 +363,11 @@ class CircleModelV1(nn.Module):
         # z = self.layer_2(z)
         # z = self.layer_3(z)
         # return z
-        return self.layer_3(self.layer_2(self.layer_1(x)))
-
+        return self.layer_3(self.layer_2(self.layer_1(x)))"""
+# Setup device agnostic code
+import torch
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"Using device: {device}")
 model_1 = CircleModelV1().to(device)
 model_1
 # %%
@@ -560,7 +567,8 @@ X_train[:5], y_train[:5]
 # %%
 # Build model with non-linear activation function
 from torch import nn
-class CircleModelV2(nn.Module):
+from models.classification_utils import CircleModelV2
+"""class CircleModelV2(nn.Module):
     def __init__(self):
         super().__init__()
         self.layer_1 = nn.Linear(in_features=2, out_features=10)
@@ -573,7 +581,7 @@ class CircleModelV2(nn.Module):
 
     def forward(self, x):
       # Intersperse the ReLU activation function between layers
-       return self.layer_3(self.relu(self.layer_2(self.relu(self.layer_1(x)))))
+       return self.layer_3(self.relu(self.layer_2(self.relu(self.layer_1(x)))))"""
 
 model_3 = CircleModelV2().to(device)
 print(model_3)
