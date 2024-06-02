@@ -4,93 +4,47 @@ import torch
 from torch import nn # building blocks for neural networks
 import matplotlib.pyplot as plt
 
-from models.linear_regression_utils import LinearRegressionModel, LinearRegressionModelV2
+from models.linear_regression_utils import LinearRegressionModel
 
-# %%
+"""
 what_were_covering = {1: "data (prepare and load)",
     2: "build model",
     3: "fitting the model to data (training)",
     4: "making predictions and evaluating a model (inference)",
     5: "saving and loading a model",
     6: "putting it all together"
-}
+}"""
 
-# %% Check pytorch version
+# Check pytorch version
 torch.__version__
 
-# %% 
 # Setup device agnostic code
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using device: {device}")
 
-# %% Data (preparing and loading)
-what_were_covering[1]
-
-# %% Create *known* parameters
+from helper_functions import plot_predictions
+from prepare_load_data import linear_regression_data
+# 1. Data (preparing and loading)
+# Known parameters
 weight = 0.7
 bias = 0.3
 
-# Create range values
-start = 0
-end = 1
-step = 0.02
-
-# Create X and y (features and labels)
-X = torch.arange(start, end, step).unsqueeze(dim=1)
-y = weight * X + bias
-X[:10], y[:10]
-
-# %% Create train/test split
-train_split = int(0.8 * len(X)) # 80% of data used for training set, 20% for testing 
+# Train/test split 80/20
+# X: features, y: labels
+X, y = linear_regression_data(weight, bias)
+train_split = int(0.8 * len(X))
 X_train, y_train = X[:train_split], y[:train_split]
 X_test, y_test = X[train_split:], y[train_split:]
+#print(f"Train: {X_train}, {y_train}\nTest: {X_test}, {y_test}")
 
-len(X_train), len(y_train), len(X_test), len(y_test)
-# %% Function to visualize relationship between X_train and y_train
-def plot_predictions(train_data=X_train, 
-                     train_labels=y_train, 
-                     test_data=X_test, 
-                     test_labels=y_test, 
-                     predictions=None):
-  """
-  Plots training data, test data and compares predictions.
-  """
-  plt.figure(figsize=(10, 7))
-
-  # Plot training data in blue
-  plt.scatter(train_data, train_labels, c="b", s=4, label="Training data")
-  
-  # Plot test data in green
-  plt.scatter(test_data, test_labels, c="g", s=4, label="Testing data")
-
-  if predictions is not None:
-    # Plot the predictions in red (predictions were made on the test data)
-    plt.scatter(test_data, predictions, c="r", s=4, label="Predictions")
-
-  # Show the legend
-  plt.legend(prop={"size": 14})
-
-# %%
-plot_predictions()
-
+plot_predictions(
+  train_data=X_train,
+  train_labels=y_train,
+  test_data=X_test,
+  test_labels=y_test,
+)
 # 2. Build model
-# %% Create a Linear Regression model class
-"""class LinearRegressionModel(nn.Module): # <- almost everything in PyTorch is a nn.Module (think of this as neural network lego blocks)
-    def __init__(self):
-        super().__init__() 
-        self.weights = nn.Parameter(torch.randn(1, # <- start with random weights (this will get adjusted as the model learns)
-                                                dtype=torch.float), # <- PyTorch loves float32 by default
-                                   requires_grad=True) # <- can we update this value with gradient descent?)
-
-        self.bias = nn.Parameter(torch.randn(1, # <- start with random bias (this will get adjusted as the model learns)
-                                            dtype=torch.float), # <- PyTorch loves float32 by default
-                                requires_grad=True) # <- can we update this value with gradient descent?))
-
-    # Forward defines the computation in the model
-    def forward(self, x: torch.Tensor) -> torch.Tensor: # <- "x" is the input data (e.g. training/testing features)
-        return self.weights * x + self.bias # <- this is the linear regression formula (y = m*x + b)"""
-
-# %%  Check contents of pytorch model
+# Check contents of pytorch model
 # Set manual seed since nn.Parameter are randomly initialzied
 torch.manual_seed(42)
 
@@ -100,15 +54,11 @@ model_0 = LinearRegressionModel().to(device)
 # Check the nn.Parameter(s) within the nn.Module subclass we created
 list(model_0.parameters())
 
-# Put model on GPU is available
-# %% Check model device
-next(model_0.parameters()).device
-
-# %%
 # Set model to GPU if it's availalble, otherwise it'll default to CPU
 model_0.to(device) # the device variable was set above to be "cuda" if available or "cpu" if not
 next(model_0.parameters()).device
 
+#################### untested code below!
 # %% Make predictions with torch.inference() context manager
 # Make predictions with model
 with torch.inference_mode(): 

@@ -1,76 +1,30 @@
 # %%
 from sklearn.datasets import make_circles
-
-# 1. Make classification data
-# Make 1000 samples 
-n_samples = 1000
-
-# Create circles
-X, y = make_circles(n_samples,
-                    noise=0.03, # a little bit of noise to the dots
-                    random_state=42) # keep random state so we get the same values
-# %%
-print(f"First 5 X features:\n{X[:5]}")
-print(f"\nFirst 5 y labels:\n{y[:5]}")
-# %%
-# Make DataFrame of circle data
-import pandas as pd
-circles = pd.DataFrame({"X1": X[:, 0],
-    "X2": X[:, 1],
-    "label": y
-})
-circles.head(10)
-"""
-It looks like each pair of X features (X1 and X2) has a label (y) 
-value of either 0 or 1.
-
-This tells us that our problem is binary classification since there's only two options (0 or 1).
-"""
-# %%
-# Check different labels
-circles.label.value_counts()
-# %%
-# Visualize with a plot
-import matplotlib.pyplot as plt
-plt.scatter(x=X[:, 0], 
-            y=X[:, 1], 
-            c=y, 
-            cmap=plt.cm.RdYlBu);
-# %%
-# Check the shapes of our features and labels
-X.shape, y.shape
-
-# View the first example of features and labels
-X_sample = X[0]
-y_sample = y[0]
-print(f"Values for one sample of X: {X_sample} and the same for y: {y_sample}")
-print(f"Shapes for one sample of X: {X_sample.shape} and the same for y: {y_sample.shape}")
-"""
-This tells us the second dimension for X means it has two features (vector) 
-where as y has a single feature (scalar).
-
-We have two inputs for one output
-"""
-# %%
-# Turn data into tensors
-# Otherwise this causes issues with computations later on
-import torch
-X = torch.from_numpy(X).type(torch.float)
-y = torch.from_numpy(y).type(torch.float)
-
-# View the first five samples
-X[:5], y[:5]
-# %%
-# Split data into train and test sets
 from sklearn.model_selection import train_test_split
 
-X_train, X_test, y_train, y_test = train_test_split(X, 
-                                                    y, 
-                                                    test_size=0.2, # 20% test, 80% train
-                                                    random_state=42) # make the random split reproducible
+from prepare_load_data import sklearn_circle_data
+
+
+# 1. Make classification data
+n_samples = 1000
+
+X, y = sklearn_circle_data(
+            samples=n_samples, 
+            noise=0.03, 
+            random_state=42
+    )
+
+# Split data into train and test sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, 
+    y, 
+    test_size=0.2,  # 20% test, 80% train
+    random_state=42 # make the random split reproducible
+)
 
 len(X_train), len(X_test), len(y_train), len(y_test)
 
+############ untested code below!
 # 2. Build model
 # %%
 # Standard PyTorch imports
@@ -100,7 +54,6 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using device: {device}")
 model_0 = CircleModelV0().to(device)
 model_0
-# %%
 """
 nn.Sequential is fantastic for straight-forward computations, however, 
 as the namespace says, it always runs in sequential order.
@@ -118,7 +71,7 @@ model_0 = nn.Sequential(
 
 model_0
 """
-#%%
+
 # Make predictions with the model
 untrained_preds = model_0(X_test.to(device))
 print(f"Length of predictions: {len(untrained_preds)}, Shape: {untrained_preds.shape}")
@@ -433,6 +386,7 @@ for epoch in range(epochs):
         print(f"Epoch: {epoch} | Loss: {loss:.5f}, Accuracy: {acc:.2f}% | Test loss: {test_loss:.5f}, Test acc: {test_acc:.2f}%")
 
 # %%
+from prepare_load_data import linear_regression_data
 # Let's create some linear data to see if our model's able to model it and we're not just using a model that can't learn anything.
 # Create some data (same as notebook 01)
 weight = 0.7
@@ -440,13 +394,9 @@ bias = 0.3
 start = 0
 end = 1
 step = 0.01
+X_regression, y_regression = linear_regression_data(weight, bias, step)
 
-# Create data
-X_regression = torch.arange(start, end, step).unsqueeze(dim=1)
-y_regression = weight * X_regression + bias # linear regression formula
-
-# Check the data
-print(len(X_regression))
+print(len(X_regression))   # Check the data
 X_regression[:5], y_regression[:5]
 # %%
 # Create train and test splits
@@ -536,31 +486,16 @@ plot_predictions(train_data=X_train_regression.cpu(),
 # 6. Non-linearity 
 # %% #####################################################
 # Start fresh, Make and plot data
-import matplotlib.pyplot as plt
-from sklearn.datasets import make_circles
+from prepare_load_data import sklearn_circle_data
 
 n_samples = 1000
-
-X, y = make_circles(n_samples=1000,
-    noise=0.03,
-    random_state=42,
-)
-
-plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.RdBu);
-# %%
-# Convert to tensors and split into train and test sets
-import torch
-from sklearn.model_selection import train_test_split
-
-# Turn data into tensors
-X = torch.from_numpy(X).type(torch.float)
-y = torch.from_numpy(y).type(torch.float)
-
+X, y = sklearn_circle_data(n_samples, noise=0.03, random_state=42)
 # Split into train and test sets
-X_train, X_test, y_train, y_test = train_test_split(X, 
-                                                    y, 
-                                                    test_size=0.2,
-                                                    random_state=42
+X_train, X_test, y_train, y_test = train_test_split(
+    X, 
+    y, 
+    test_size=0.2,
+    random_state=42
 )
 
 X_train[:5], y_train[:5]
@@ -621,6 +556,9 @@ with torch.inference_mode():
     y_preds = torch.round(torch.sigmoid(model_3(X_test))).squeeze()
 y_preds[:10], y[:10] # want preds in same format as truth labels
 # %%
+import matplotlib.pyplot as plt
+
+
 # Plot decision boundaries for training and test sets
 plt.figure(figsize=(12, 6))
 plt.subplot(1, 2, 1)
@@ -635,7 +573,7 @@ plot_decision_boundary(model_3, X_test, y_test) # model_3 = has non-linearity
 # Create a toy tensor (similar to the data going into our model(s))
 A = torch.arange(-10, 10, 1, dtype=torch.float32)
 # Visualize the toy tensor
-plt.plot(A);
+plt.plot(A)
 
 # %%
 # Create ReLU function by hand 
