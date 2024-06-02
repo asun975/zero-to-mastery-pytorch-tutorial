@@ -47,7 +47,7 @@ device
     def forward(self, x):
         # Return the output of layer_2, a single feature, the same shape as y
         return self.layer_2(self.layer_1(x)) # computation goes through layer_1 first then the output of layer_1 goes through layer_2"""
-from models.classification_utils import CircleModelV0
+from models.model_cls import CircleModelV0
 # 4. Create an instance of the model and send it to target device
 # Setup device agnostic code
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -300,7 +300,7 @@ That explains the 50% accuracy. Since our data is circular, drawing a straight l
 In machine learning terms, our model is underfitting, meaning it's not learning predictive patterns from the data.
 """
 # %%
-from models.classification_utils import CircleModelV1
+from models.model_cls import CircleModelV1
 # Change hyperparameters
 """class CircleModelV1(nn.Module):
     def __init__(self):
@@ -502,7 +502,7 @@ X_train[:5], y_train[:5]
 # %%
 # Build model with non-linear activation function
 from torch import nn
-from models.classification_utils import CircleModelV2
+from models.model_cls import CircleModelV2
 """class CircleModelV2(nn.Module):
     def __init__(self):
         super().__init__()

@@ -21,7 +21,7 @@ from sklearn.datasets import make_blobs
 from sklearn.model_selection import train_test_split
 
 from prepare_load_data import sklearn_blobs_data
-
+from models.model_cls import BlobModel
 
 # Set the hyperparameters for data creation
 NUM_CLASSES = 4
@@ -47,14 +47,10 @@ X_blob_train, X_blob_test, y_blob_train, y_blob_test = train_test_split(X_blob,
 plt.figure(figsize=(10, 7))
 plt.scatter(X_blob[:, 0], X_blob[:, 1], c=y_blob, cmap=plt.cm.RdYlBu)
 
-# %%
-import torch
 # Create device agnostic code
 device = "cuda" if torch.cuda.is_available() else "cpu"
 device
 
-# %%
-from models.classification_utils import BlobModel
 # Build model
 """class BlobModel(nn.Module):
     def __init__(self, input_features, output_features, hidden_units=8):

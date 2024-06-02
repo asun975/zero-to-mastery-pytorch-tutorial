@@ -5,8 +5,6 @@ from torch import nn
 
 # Import torchvision 
 import torchvision
-from torchvision import datasets
-from torchvision.transforms import ToTensor
 
 # Import matplotlib for visualization
 import matplotlib.pyplot as plt
@@ -133,8 +131,8 @@ print(f"Shape after flattening: {output.shape} -> [color_channels, height*width]
 # Try uncommenting below and see what happens
 #print(x)
 #print(output)
-# %%
-from torch import nn
+
+"""from torch import nn
 class FashionMNISTModelV0(nn.Module):
     def __init__(self, input_shape: int, hidden_units: int, output_shape: int):
         super().__init__()
@@ -145,10 +143,10 @@ class FashionMNISTModelV0(nn.Module):
         )
     
     def forward(self, x):
-        return self.layer_stack(x)
+        return self.layer_stack(x)"""
 # %%
 import torch
-from models.computervision_utils import FashionMNISTModelV0
+from models.model_cls import FashionMNISTModelV0
 torch.manual_seed(42)
 
 # Need to setup model with input parameters

@@ -4,7 +4,7 @@ import torch
 from torch import nn # building blocks for neural networks
 import matplotlib.pyplot as plt
 
-from models.linear_regression_utils import LinearRegressionModel
+from models.model_cls import LinearRegressionModel
 
 """
 what_were_covering = {1: "data (prepare and load)",
