@@ -72,7 +72,7 @@ for i in range(1, rows * cols + 1):
     fig.add_subplot(rows, cols, i)
     plt.imshow(img.squeeze(), cmap="gray")
     plt.title(class_names[label])
-    plt.axis(False);
+    plt.axis(False)
 
 ### Dataloader
 # %%
@@ -161,6 +161,8 @@ class FashionMNISTModelV0(nn.Module):
     def forward(self, x):
         return self.layer_stack(x)
 # %%
+import torch
+from models.computervision_utils import FashionMNISTModelV0
 torch.manual_seed(42)
 
 # Need to setup model with input parameters
