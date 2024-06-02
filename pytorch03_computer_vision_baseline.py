@@ -11,29 +11,15 @@ from torchvision.transforms import ToTensor
 # Import matplotlib for visualization
 import matplotlib.pyplot as plt
 
+from prepare_load_data import FashionMNIST_data
+
 # Check versions
 # Note: your PyTorch version shouldn't be lower than 1.10.0 and torchvision version shouldn't be lower than 0.11
 print(f"PyTorch version: {torch.__version__}\ntorchvision version: {torchvision.__version__}")
 
-### Dataset 
-# %% 
-# Setup training data
-train_data = datasets.FashionMNIST(
-    root="data", # where to download data to?
-    train=True, # get training data
-    download=True, # download data if it doesn't exist on disk
-    transform=ToTensor(), # images come as PIL format, we want to turn into Torch tensors
-    target_transform=None # you can transform labels as well
-)
+# Dataset 
+train_data, test_data = FashionMNIST_data()
 
-# Setup testing data
-test_data = datasets.FashionMNIST(
-    root="data",
-    train=False, # get test data
-    download=True,
-    transform=ToTensor()
-)
-# %%
 # See first training sample
 image, label = train_data[0]
 image, label

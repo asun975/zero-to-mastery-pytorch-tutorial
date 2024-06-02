@@ -1,43 +1,23 @@
 ### Build a better model with non-linearity
-
-# %%
-# Import torchvision 
-import torchvision
-from torchvision import datasets
-from torchvision.transforms import ToTensor
-
-# Import matplotlib for visualization
 import matplotlib.pyplot as plt
-# %%
+import torch
+from torch import nn
+from torch.utils.data import DataLoader
+
+from prepare_load_data import FashionMNIST_data
+
+
 # Setup device agnostic code
 import torch
 device = "cuda" if torch.cuda.is_available() else "cpu"
 device
 
-# %%
 # Setup training data
-train_data = datasets.FashionMNIST(
-    root="data", # where to download data to?
-    train=True, # get training data
-    download=True, # download data if it doesn't exist on disk
-    transform=ToTensor(), # images come as PIL format, we want to turn into Torch tensors
-    target_transform=None # you can transform labels as well
-)
-
-# Setup testing data
-test_data = datasets.FashionMNIST(
-    root="data",
-    train=False, # get test data
-    download=True,
-    transform=ToTensor()
-)
+train_data, test_data = FashionMNIST_data()
 
 class_names = train_data.classes
 
 ### Dataloader
-# %%
-from torch.utils.data import DataLoader
-
 # Setup the batch size hyperparameter
 BATCH_SIZE = 32
 
@@ -51,10 +31,6 @@ test_dataloader = DataLoader(test_data,
     batch_size=BATCH_SIZE,
     shuffle=False # don't necessarily have to shuffle the testing data
 )
-
-# %%
-import torch
-from torch import nn
 
 # Create a model with non-linear and linear layers
 """class FashionMNISTModelV1(nn.Module):
