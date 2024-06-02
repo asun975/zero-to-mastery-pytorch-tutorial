@@ -1,11 +1,10 @@
 # zero-to-mastery-pytorch-tutorial
-> PyTorch 2.3.0
 > 
-> Python 3.11
+> requires Python 3.11
 >
-> Following "Zero to Mastery Learn PyTorch for Deep Learning Course" by mrdbourke (GitHub)
+> My progress learning the "Zero to Mastery Learn PyTorch for Deep Learning Course" by mrdbourke (GitHub).
 >
-> Course material: https://github.com/mrdbourke/pytorch-deep-learning/ 
+> Full course material: https://github.com/mrdbourke/pytorch-deep-learning/ 
 >
 > Online book: https://www.learnpytorch.io/
 >
