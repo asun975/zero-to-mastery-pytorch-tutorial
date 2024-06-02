@@ -4,7 +4,7 @@ import pandas as pd
 from torch import arange
 from torch import float as flt
 from torch import from_numpy
-from torch import LongTensor
+from torch import LongTensor, Tensor
 
 from torchvision import datasets
 from torchvision.transforms import ToTensor
@@ -16,8 +16,8 @@ from typing import Iterable, Tuple
 def linear_regression_data(
     weight: float,
     bias: float,
-    step: float = 0.2,
-) -> Iterable[Tuple]:
+    step: float = 0.02,
+) -> Iterable[Tuple[Tensor, Tensor]]:
     # Range values
     start = 0
     end = 1
@@ -25,7 +25,6 @@ def linear_regression_data(
     # X: features, y: labels
     X = arange(start, end, step).unsqueeze(dim=1)
     y = weight * X + bias
-    # print(f"{X[:10]}\n{y[:10]}")
 
     return X, y
 
