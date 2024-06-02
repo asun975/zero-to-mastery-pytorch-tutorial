@@ -17,7 +17,6 @@ Specifically, let's do the following:
 import torch
 from torch import nn
 import matplotlib.pyplot as plt
-from sklearn.datasets import make_blobs
 from sklearn.model_selection import train_test_split
 
 from prepare_load_data import sklearn_blobs_data
@@ -33,7 +32,7 @@ X_blob, y_blob = sklearn_blobs_data(
    n_samples=1000, 
    n_classes=NUM_CLASSES, 
    n_features=NUM_FEATURES, 
-   random_seed=RANDOM_SEED
+   random_seed=RANDOM_SEED,
    )
 
 # 3. Split into train and test sets

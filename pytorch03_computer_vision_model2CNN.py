@@ -30,7 +30,6 @@ test_dataloader = DataLoader(test_data,
     shuffle=False # don't necessarily have to shuffle the testing data
 )
 
-# %%
 # Create a convolutional neural network 
 """class FashionMNISTModelV2(nn.Module):
     # Model architecture copying TinyVGG from: 

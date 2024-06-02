@@ -1,4 +1,4 @@
-### Build a better model with non-linearity
+#%% Build a better model with non-linearity
 #import matplotlib.pyplot as plt
 import torch
 from torch import nn
@@ -47,7 +47,6 @@ test_dataloader = DataLoader(test_data,
     def forward(self, x: torch.Tensor):
         return self.layer_stack(x)"""
     
-# %%
 from models.model_cls import FashionMNISTModelV1
 torch.manual_seed(42)
 model_1 = FashionMNISTModelV1(input_shape=784, # number of input features
@@ -60,7 +59,7 @@ from helper_functions import accuracy_fn
 loss_fn = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(params=model_1.parameters(), 
                             lr=0.1)
-# %%
+# %% untested code!
 def train_step(model: torch.nn.Module,
                data_loader: torch.utils.data.DataLoader,
                loss_fn: torch.nn.Module,

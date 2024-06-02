@@ -32,6 +32,7 @@ bias = 0.3
 # Train/test split 80/20
 # X: features, y: labels
 X, y = linear_regression_data(weight, bias)
+print(f"{X[:20]}\n{y[:20]}")
 train_split = int(0.8 * len(X))
 X_train, y_train = X[:train_split], y[:train_split]
 X_test, y_test = X[train_split:], y[train_split:]
