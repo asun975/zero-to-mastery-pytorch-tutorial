@@ -93,6 +93,9 @@ def plot_predictions(
     # Show the legend
     plt.legend(prop={"size": 14})
 
+    # Show in non-interactive
+    plt.show()
+
 
 # Calculate accuracy (a classification metric)
 def accuracy_fn(y_true, y_pred):
