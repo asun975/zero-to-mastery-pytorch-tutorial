@@ -30,12 +30,12 @@ def linear_regression_data(
 
 
 def sklearn_circle_data(
-    samples: int,
+    n_samples: int,
     noise: float,
-    random_state: float
-) -> Iterable[Tuple]:
+    random_state: int
+) -> Iterable[Tuple[Tensor, Tensor]]:
     # Create circles
-    X, y = make_circles(samples, noise, random_state)
+    X, y = make_circles(n_samples=n_samples, noise=noise, random_state=random_state)
     # keep random state so we get the same values
 
     print(f"First 5 X features:\n{X[:5]}")

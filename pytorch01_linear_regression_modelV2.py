@@ -3,44 +3,44 @@
 import torch
 from torch import nn # building blocks for neural networks
 import matplotlib.pyplot as plt
-from pytorch01_workflow_video import plot_predictions
+
 from pytorch01_workflow_video import training_loop, testing_loop
+from prepare_load_data import linear_regression_data
+from models.model_cls import LinearRegressionModelV2
+
+
 # %% Check pytorch version
+from prepare_load_data import linear_regression_data
+from models.model_cls import LinearRegressionModelV2
+
+
 torch.__version__
 
-# %% 
 # Setup device agnostic code
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using device: {device}")
 
-# %% Create *known* parameters
+# Create *known* parameters
 weight = 0.7
 bias = 0.3
 
 # Create range values
-start = 0
-end = 1
 step = 0.02
 
 # Create X and y (features and labels)
-X = torch.arange(start, end, step).unsqueeze(dim=1)
-y = weight * X + bias
-X[:10], y[:10]
+X, y = linear_regression_data(weight, bias, step)
 
-# %% Create train/test split
+# Create train/test split
 train_split = int(0.8 * len(X)) # 80% of data used for training set, 20% for testing 
 X_train, y_train = X[:train_split], y[:train_split]
 X_test, y_test = X[train_split:], y[train_split:]
 
 len(X_train), len(y_train), len(X_test), len(y_test)
 
-# %%
-plot_predictions()
-
 # 2. Build model
 
-# %% Linear Regression model using nn.Linear() for creating model parameters
-# Subclass nn.Module to make our model
+# Linear Regression model using nn.Linear() for creating model parameters
+"""# Subclass nn.Module to make our model
 class LinearRegressionModelV2(nn.Module):
     def __init__(self):
         super().__init__()
@@ -50,9 +50,8 @@ class LinearRegressionModelV2(nn.Module):
     
     # Define the forward computation (input data x flows through nn.Linear())
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.linear_layer(x)
+        return self.linear_layer(x)"""
 
-# %%
 # Set the manual seed when creating the model (this isn't always need but is used for demonstrative purposes, try commenting it out and seeing what happens)
 torch.manual_seed(42)
 model_1 = LinearRegressionModelV2()
@@ -141,6 +140,7 @@ y_preds
 # plot_predictions(predictions=y_preds) # -> won't work for data not on CPU
 
 # Put data on the CPU and plot it
+from helper_functions import plot_predictions
 plot_predictions(predictions=y_preds.cpu())
 
 # 5. Save and load pytorch model

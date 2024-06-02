@@ -1,5 +1,4 @@
 # %%
-from sklearn.datasets import make_circles
 from sklearn.model_selection import train_test_split
 
 from prepare_load_data import sklearn_circle_data
@@ -9,9 +8,9 @@ from prepare_load_data import sklearn_circle_data
 n_samples = 1000
 
 X, y = sklearn_circle_data(
-            samples=n_samples, 
+            n_samples, 
             noise=0.03, 
-            random_state=42
+            random_state=42,
     )
 
 # Split data into train and test sets
@@ -25,8 +24,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 len(X_train), len(X_test), len(y_train), len(y_test)
 
 ############ untested code below!
-# 2. Build model
-# %%
+# %% 2. Build model
 # Standard PyTorch imports
 import torch
 from torch import nn
