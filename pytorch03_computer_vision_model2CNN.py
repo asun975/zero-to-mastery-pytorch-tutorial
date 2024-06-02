@@ -51,11 +51,9 @@ test_dataloader = DataLoader(test_data,
 
 # %%
 # Create a convolutional neural network 
-class FashionMNISTModelV2(nn.Module):
-    """
-    Model architecture copying TinyVGG from: 
-    https://poloclub.github.io/cnn-explainer/
-    """
+"""class FashionMNISTModelV2(nn.Module):
+    # Model architecture copying TinyVGG from: 
+    # https://poloclub.github.io/cnn-explainer/
     def __init__(self, input_shape: int, hidden_units: int, output_shape: int):
         super().__init__()
         self.block_1 = nn.Sequential(
@@ -96,8 +94,9 @@ class FashionMNISTModelV2(nn.Module):
         # print(x.shape)
         x = self.classifier(x)
         # print(x.shape)
-        return x
+        return x"""
 
+from models.computervision_utils import FashionMNISTModelV2
 torch.manual_seed(42)
 model_2 = FashionMNISTModelV2(input_shape=1, 
     hidden_units=10, 

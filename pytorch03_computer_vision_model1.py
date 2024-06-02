@@ -57,7 +57,7 @@ import torch
 from torch import nn
 
 # Create a model with non-linear and linear layers
-class FashionMNISTModelV1(nn.Module):
+"""class FashionMNISTModelV1(nn.Module):
     def __init__(self, input_shape: int, hidden_units: int, output_shape: int):
         super().__init__()
         self.layer_stack = nn.Sequential(
@@ -69,9 +69,10 @@ class FashionMNISTModelV1(nn.Module):
         )
     
     def forward(self, x: torch.Tensor):
-        return self.layer_stack(x)
+        return self.layer_stack(x)"""
     
 # %%
+from models.computervision_utils import FashionMNISTModelV1
 torch.manual_seed(42)
 model_1 = FashionMNISTModelV1(input_shape=784, # number of input features
     hidden_units=10,
