@@ -77,7 +77,7 @@ test_dataloader = DataLoader(test_data,
         # print(x.shape)
         return x"""
 
-from models.computervision_utils import FashionMNISTModelV2
+from models.model_cls import FashionMNISTModelV2
 torch.manual_seed(42)
 model_2 = FashionMNISTModelV2(input_shape=1, 
     hidden_units=10, 

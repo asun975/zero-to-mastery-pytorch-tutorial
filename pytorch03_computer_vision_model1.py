@@ -1,5 +1,5 @@
 ### Build a better model with non-linearity
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import torch
 from torch import nn
 from torch.utils.data import DataLoader
@@ -48,7 +48,7 @@ test_dataloader = DataLoader(test_data,
         return self.layer_stack(x)"""
     
 # %%
-from models.computervision_utils import FashionMNISTModelV1
+from models.model_cls import FashionMNISTModelV1
 torch.manual_seed(42)
 model_1 = FashionMNISTModelV1(input_shape=784, # number of input features
     hidden_units=10,
