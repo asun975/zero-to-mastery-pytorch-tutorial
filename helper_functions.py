@@ -4,12 +4,9 @@ A series of helper functions used throughout the course.
 If a function gets defined once and could be used over and over, it'll go in here.
 """
 import torch
+from torch import Tensor
 import matplotlib.pyplot as plt
 import numpy as np
-
-from torch import nn
-from torch import Tensor
-from torch.optim import SGD
 
 import os
 import zipfile
@@ -325,3 +322,8 @@ def data_split(
     X_test, y_test = X_features[train_split:], y_labels[train_split:]
 
     return X_train, y_train, X_test, y_test
+
+def set_device():
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    print(f"Using device {device}")
+    return device
