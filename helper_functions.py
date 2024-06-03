@@ -20,7 +20,6 @@ import requests
 
 from typing import Iterable, Tuple
 
-from models import model_cls
 
 # Walk through an image classification directory and find out how many files (images)
 # are in each subdirectory.
@@ -314,8 +313,7 @@ def save_model(model, MODEL_PATH: Path, MODEL_NAME: str) -> str:
     # 3. Save the model state dict 
     print(f"Saving model to: {MODEL_SAVE_PATH}")
     torch.save(obj=model.state_dict(), # only saving the state_dict() only saves the models learned parameters
-            f=MODEL_SAVE_PATH) 
-    return MODEL_SAVE_PATH
+            f=MODEL_SAVE_PATH)
 
 def data_split(
         train_percent: float, 
