@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from torch import nn
+from torch import Tensor
+from torch.optim import SGD
 
 import os
 import zipfile
@@ -15,6 +17,10 @@ import zipfile
 from pathlib import Path
 
 import requests
+
+from typing import Iterable, Tuple
+
+from models import model_cls
 
 # Walk through an image classification directory and find out how many files (images)
 # are in each subdirectory.
@@ -295,3 +301,29 @@ def download_data(source: str,
             os.remove(data_path / target_file)
     
     return image_path
+
+def save_model(model, MODEL_PATH: Path, MODEL_NAME: str) -> str:
+    # Recommended way is to save with pytorch model's state_dict()
+    # 1. Create models directory 
+    MODEL_PATH.mkdir(parents=True, exist_ok=True)
+
+    # 2. Create model 
+    # Common convention to save with .pt or .pth
+    MODEL_SAVE_PATH = MODEL_PATH / MODEL_NAME
+
+    # 3. Save the model state dict 
+    print(f"Saving model to: {MODEL_SAVE_PATH}")
+    torch.save(obj=model.state_dict(), # only saving the state_dict() only saves the models learned parameters
+            f=MODEL_SAVE_PATH) 
+    return MODEL_SAVE_PATH
+
+def data_split(
+        train_percent: float, 
+        X_features: Tensor, 
+        y_labels: Tensor
+        ) -> Iterable[Tuple]:
+    train_split = int(train_percent * len(X_features))
+    X_train, y_train = X_features[:train_split], y_labels[:train_split]
+    X_test, y_test = X_features[train_split:], y_labels[train_split:]
+
+    return X_train, y_train, X_test, y_test

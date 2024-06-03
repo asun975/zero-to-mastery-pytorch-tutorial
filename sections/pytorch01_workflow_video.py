@@ -14,7 +14,7 @@ torch.__version__
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using device: {device}")
 
-from helper_functions import plot_predictions
+from helper_functions import plot_predictions, data_split
 from prepare_load_data import linear_regression_data
 # 1. Data (preparing and loading)
 # Known parameters
@@ -25,9 +25,11 @@ bias = 0.3
 # X: features, y: labels
 X, y = linear_regression_data(weight, bias)
 print(f"{X[:20]}\n{y[:20]}")
-train_split = int(0.8 * len(X))
-X_train, y_train = X[:train_split], y[:train_split]
-X_test, y_test = X[train_split:], y[train_split:]
+X_train, y_train, X_test, y_test = data_split(
+   train_percent=0.8, 
+   X_features=X, 
+   y_labels=y
+   )
 #print(f"Train: {X_train}, {y_train}\nTest: {X_test}, {y_test}")
 
 plot_predictions(
@@ -36,6 +38,7 @@ plot_predictions(
   test_data=X_test,
   test_labels=y_test,
 )
+#%%
 # 2. Build model
 # Check contents of pytorch model
 # Set manual seed since nn.Parameter are randomly initialzied
@@ -52,7 +55,7 @@ model_0.to(device) # the device variable was set above to be "cuda" if available
 next(model_0.parameters()).device
 
 #################### untested code below!
-# %% Make predictions with torch.inference() context manager
+# Make predictions with torch.inference() context manager
 # Make predictions with model
 with torch.inference_mode(): 
     y_preds = model_0(X_test)
@@ -61,7 +64,6 @@ with torch.inference_mode():
 # with torch.no_grad():
 #   y_preds = model_0(X_test)
 
-# %%
 # Check the predictions
 print(f"Number of testing samples: {len(X_test)}") 
 print(f"Number of predictions made: {len(y_preds)}")
@@ -69,7 +71,8 @@ print(f"Predicted values:\n{y_preds}")
 
 # 3. Train model
 
-# %% Linear Regression model V1
+# Linear Regression model V1
+#Loss function, optimizer, training loop
 # Create the loss function
 loss_fn = nn.L1Loss() # MAE loss is same as L1Loss
 
@@ -77,7 +80,7 @@ loss_fn = nn.L1Loss() # MAE loss is same as L1Loss
 optimizer = torch.optim.SGD(params=model_0.parameters(), # parameters of target model to optimize
                             lr=0.01) # learning rate (how much the optimizer should change parameters at each step, higher=more (less stable), lower=less (might take a long time))
 
-# %%
+# Train Loop
 def training_loop(model,
                   train_data,
                   train_labels):
@@ -87,7 +90,7 @@ def training_loop(model,
   model.train()
 
   # 1. Forward pass on train data using the forward() method inside 
-  y_pred = model_0(train_data)
+  y_pred = model(train_data)
   # print(y_pred)
 
   # 2. Calculate the loss (how different are our models predictions to the ground truth)
@@ -104,7 +107,6 @@ def training_loop(model,
 
   return loss
 
-# %%
 def testing_loop(model,
                  test_data,
                  test_labels):
@@ -119,7 +121,7 @@ def testing_loop(model,
     # 2. Caculate loss on test data
     test_loss = loss_fn(test_pred, test_labels.type(torch.float)) # predictions come in torch.float datatype, so comparisons need to be done with tensors of the same type
   return test_loss
-# %%
+
 torch.manual_seed(42)
 
 # Set the number of epochs (how many times the model will pass over the training data)
@@ -134,6 +136,7 @@ for epoch in range(epochs):
     loss = training_loop(model=model_0,
                          train_data=X_train,
                          train_labels=y_train)
+
     """### Training
 
     # Put model in training mode (this is the default state of a model)
@@ -155,10 +158,11 @@ for epoch in range(epochs):
     # 5. Progress the optimizer
     optimizer.step()
     """
-
+    
     test_loss = testing_loop(model=model_0,
                              test_data=X_test,
                              test_labels=y_test)
+
     """### Testing
 
     # Put the model in evaluation mode
@@ -217,23 +221,12 @@ That means you should only ever unpickle (load) data you trust.
 That goes for loading PyTorch models as well. 
 Only ever use saved PyTorch models from sources you trust.
 """
-# %%
-# Recommended way is to save with pytorch model's state_dict()
 from pathlib import Path
+from helper_functions import save_model
 
-# 1. Create models directory 
 MODEL_PATH = Path("models")
-MODEL_PATH.mkdir(parents=True, exist_ok=True)
-
-# 2. Create model 
-# Common convention to save with .pt or .pth
-MODEL_NAME = "01_pytorch_workflow_model_0.pth"
-MODEL_SAVE_PATH = MODEL_PATH / MODEL_NAME
-
-# 3. Save the model state dict 
-print(f"Saving model to: {MODEL_SAVE_PATH}")
-torch.save(obj=model_0.state_dict(), # only saving the state_dict() only saves the models learned parameters
-           f=MODEL_SAVE_PATH) 
+MODEL_NAME = "pytorch01_workflow_video.pth"
+MODEL_SAVE_PATH = save_model(model_0, MODEL_PATH, MODEL_NAME)
 # %%
 # Load saved model state_dict()
 # dictionary of learned parameters not entire model for flexibility
