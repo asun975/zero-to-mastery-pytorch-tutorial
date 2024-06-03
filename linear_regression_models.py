@@ -201,7 +201,6 @@ def main(args):
     except Exception as e:
         print(f"An unexpected exception occured of type {type(e)}")
         print(f"Arguments in .args: {e.args}")
-        print(f"Arguments: {e}")  # print args
 
 if __name__ == "__main__":
     args = parse_args()
