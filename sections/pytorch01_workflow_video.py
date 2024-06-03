@@ -54,7 +54,6 @@ list(model_0.parameters())
 model_0.to(device) # the device variable was set above to be "cuda" if available or "cpu" if not
 next(model_0.parameters()).device
 
-#################### untested code below!
 # Make predictions with torch.inference() context manager
 # Make predictions with model
 with torch.inference_mode(): 
