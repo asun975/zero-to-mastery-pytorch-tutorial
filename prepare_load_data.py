@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from torch import arange
-from torch import float as flt
+from torch import float32 as flt
 from torch import from_numpy
 from torch import LongTensor, Tensor
 
