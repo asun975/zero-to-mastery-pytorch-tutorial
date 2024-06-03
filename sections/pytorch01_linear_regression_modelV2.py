@@ -12,6 +12,7 @@ from models.model_cls import LinearRegressionModelV2
 # %% Check pytorch version
 from prepare_load_data import linear_regression_data
 from models.model_cls import LinearRegressionModelV2
+from helper_functions import data_split
 
 
 torch.__version__
@@ -31,12 +32,14 @@ step = 0.02
 X, y = linear_regression_data(weight, bias, step)
 
 # Create train/test split
-train_split = int(0.8 * len(X)) # 80% of data used for training set, 20% for testing 
-X_train, y_train = X[:train_split], y[:train_split]
-X_test, y_test = X[train_split:], y[train_split:]
+X_train, y_train, X_test, y_test = data_split(
+    train_percent=0.8, 
+    X_features=X,
+    y_labels=y
+    )
 
 len(X_train), len(y_train), len(X_test), len(y_test)
-
+#%%
 # 2. Build model
 
 # Linear Regression model using nn.Linear() for creating model parameters
