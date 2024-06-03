@@ -1,4 +1,6 @@
 # %%
+import torch
+from torch import nn
 from sklearn.model_selection import train_test_split
 
 from prepare_load_data import sklearn_circle_data
@@ -25,14 +27,10 @@ len(X_train), len(X_test), len(y_train), len(y_test)
 
 ############ untested code below!
 # %% 2. Build model
-# Standard PyTorch imports
-import torch
-from torch import nn
-
 # Make device agnostic code
 device = "cuda" if torch.cuda.is_available() else "cpu"
-device
-# %%
+print(f"Using device: {device}")
+
 # 1. Construct a model class that subclasses nn.Module
 """class CircleModelV0(nn.Module):
     def __init__(self):
@@ -48,8 +46,6 @@ device
 from models.model_cls import CircleModelV0
 # 4. Create an instance of the model and send it to target device
 # Setup device agnostic code
-device = "cuda" if torch.cuda.is_available() else "cpu"
-print(f"Using device: {device}")
 model_0 = CircleModelV0().to(device)
 model_0
 """
