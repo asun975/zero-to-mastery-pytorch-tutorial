@@ -66,7 +66,7 @@ def plot_decision_boundary(model: torch.nn.Module, X: torch.Tensor, y: torch.Ten
         y_pred = torch.round(torch.sigmoid(y_logits))  # binary
 
     # Reshape preds and plot
-    y_pred = y_pred.reshape(xx.shape).detach().numpy()
+    y_pred = y_pred.to("cpu").reshape(xx.shape).detach().numpy()
     plt.contourf(xx, yy, y_pred, cmap=plt.cm.RdYlBu, alpha=0.7)
     plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap=plt.cm.RdYlBu)
     plt.xlim(xx.min(), xx.max())
@@ -80,6 +80,12 @@ def plot_predictions(
     """
   Plots linear training data and test data and compares predictions.
   """
+    # Copy data to cpu memory
+    train_data = Tensor.cpu(train_data)
+    train_labels = Tensor.cpu(train_labels)
+    test_data = Tensor.cpu(test_data)
+    test_labels = Tensor.cpu(test_labels)
+
     plt.figure(figsize=(10, 7))
 
     # Plot training data in blue
@@ -90,7 +96,7 @@ def plot_predictions(
 
     if predictions is not None:
         # Plot the predictions in red (predictions were made on the test data)
-        plt.scatter(test_data, predictions, c="r", s=4, label="Predictions")
+        plt.scatter(test_data, Tensor.cpu(predictions), c="r", s=4, label="Predictions")
 
     # Show the legend
     plt.legend(prop={"size": 14})

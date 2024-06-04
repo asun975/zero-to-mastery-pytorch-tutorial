@@ -19,7 +19,20 @@ from helper_functions import accuracy_fn, set_device, print_train_time, set_seed
 from models.model_cls import FashionMNISTModelV0, FashionMNISTModelV1, FashionMNISTModelV2
 from prepare_load_data import FashionMNIST_data
 
-"""Untested code."""
+"""
+An unexpected exception occured of type <class 'RuntimeError'>
+*** print_exception:
+Traceback (most recent call last):
+  File "C:\Users\Karmy\sunash\zero-to-mastery-pytorch-tutorial\computer_vision.py", line 310, in main
+    model_results = eval_model(
+                    ^^^^^^^^^^^
+  File "C:\Users\Karmy\sunash\zero-to-mastery-pytorch-tutorial\computer_vision.py", line 143, in eval_model        
+    y_pred = model(X)
+             ^^^^^^^^
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, 
+cuda:0 and cpu! (when checking argument for argument mat1 in method wrapper_CUDA_addmm)
+"""
+
 PROG_NAME = "Train/test Computer vision model"
 PROG_DESC = "Section 03 PyTorch Computer vision"
 # TODO: remove hardcoded names, load settings for saved models
@@ -49,11 +62,11 @@ def is_valid_model(model_name: str) -> bool:
 
 def get_model(model_name: str, units: int, num_classes: int, device: torch.device) ->nn.Module:
     if model_name == "v1":
-        model = FashionMNISTModelV1(input_shape=784, hidden_units=units, output_shape=num_classes.to(device))
+        model = FashionMNISTModelV1(input_shape=784, hidden_units=units, output_shape=num_classes)
     elif model_name == "v2":
-        model = FashionMNISTModelV2(input_shape=1, hidden_units=units, output_shape=num_classes.to(device))
+        model = FashionMNISTModelV2(input_shape=1, hidden_units=units, output_shape=num_classes)
     else:  # default 
-        model = FashionMNISTModelV0(input_shape=784, hidden_units=units, output_shape=num_classes.to(device))
+        model = FashionMNISTModelV0(input_shape=784, hidden_units=units, output_shape=num_classes)
     
     return model
 
@@ -209,17 +222,18 @@ def main(args):
         plt.title(class_names[label])
         plt.show()
         
+        """# Show all images in dataset
         set_seeds()
         fig = plt.figure(figsize=(9, 9))
         rows, cols = 4, 4
         for i in range(1, rows * cols + 1):
-            random_idx = torch.randint(0, len(train_data), size=[1].item())
+            random_idx = torch.randint(0, len(train_data), size=[1]).item()
             img, label = train_data[random_idx]
             fig.add_subplot(rows, cols, i)
             plt.imshow(img.squeeze(), cmap="gray")
             plt.title(class_names[label])
             plt.axis(False)
-            plt.show()
+            plt.show()"""
         
         # Dataloader
         # Turn dataset into iterables (batches)
@@ -233,14 +247,17 @@ def main(args):
             batch_size=BATCH_SIZE,
             shuffle=False
         )
-        # Print Dataloader info (comment out to skip)
+
+        """# Print Dataloader info (comment out to skip)
         print(f"Dataloaders: {train_dataloader, test_dataloader}")
         print(f"Length of train dataloader: {len(train_dataloader)} batches of {BATCH_SIZE}")
         print(f"Length of train dataloader: {len(test_dataloader)} batches of {BATCH_SIZE}")
+
         # Print info about train dataloader
         train_features_batch, train_labels_batch = next(iter(train_dataloader))
         print(f"Shape of training features: {train_features_batch.shape}")
         print(f"Shape of training labels: {train_labels_batch.shape}")
+
         # Show a sample
         set_seeds()
         random_idx = torch.randint(0, len(train_features_batch), size=[1]).item()
@@ -248,7 +265,7 @@ def main(args):
         plt.axis("Off")
         plt.show()
         print(f"Image size: {img.shape}")
-        print(f"Label: {label}, label size: {label.shape}")
+        print(f"Label: {label}, label size: {train_labels_batch.shape}")
 
         # Flatten layer for image data (comment out to skip)
         flatten_model = nn.Flatten()
@@ -256,16 +273,19 @@ def main(args):
         output = flatten_model(x)  # forward pass
         print(f"Shape before flattening: {x.shape} -> [color_channels, height, width]")
         print(f"Shape after flattening: {output.shape} -> [color_channels, height * width]")
-        print(x)
-        print(output)
+        #print(x)
+        #print(output)"""
 
         # Build model
         set_seeds()
-        model = get_model(MODEL, units=10, num_classes=len(class_names))
+        model = get_model(MODEL, units=10, num_classes=len(class_names), device=device)
         model.to(device)
 
         # Loss function and optimizer
-        loss_fn = nn.CrossEntropyLoss  # criteron or cost fn
+        """! omitting () i.e. not passing the nn constructor causes:
+        RuntimeError: Boolean value of Tensor with more than one value is ambiguous
+        """
+        loss_fn = nn.CrossEntropyLoss()  # criteron or cost fn
         optimizer = torch.optim.SGD(params=model.parameters(), lr=LEARNING_RATE)
         # Set seed and timer
         set_seeds()
@@ -287,6 +307,7 @@ def main(args):
                 model=model,
                 data_loader=test_dataloader,
                 loss_fn=loss_fn,
+                accuracy_fn=accuracy_fn,
                 device=device
             )
         
