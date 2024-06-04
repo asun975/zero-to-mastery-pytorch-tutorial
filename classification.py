@@ -19,6 +19,7 @@ from models.model_cls import CircleModelV0, CircleModelV1, CircleModelV2
 PROG_NAME = "Train/test NN Classification model"
 PROG_DESC = "Section 02 PyTorch Neural Networks: Classification models"
 # TODO: remove hardcoded names
+# TODO: implement loading different models to compare
 CHOICES = ('v0', 'v1', 'v2')
 DEFAULT = CHOICES[0]
 
