@@ -1,6 +1,8 @@
 from os import path
 from pathlib import Path
 from pprint import pprint
+import sys
+from traceback import print_exception
 
 from argparse import ArgumentParser
 import matplotlib.pyplot as plt
@@ -11,6 +13,7 @@ from torch import inference_mode
 from torch import load
 from torch import optim
 from torch import nn
+from torch import Tensor
 from torch import __version__
 
 from helper_functions import plot_predictions, data_split, save_model, set_seeds
@@ -126,8 +129,8 @@ def main(args):
             # Print train and test loss over epochs
             if epoch % 10 == 0:
                 epoch_count.append(epoch)
-                train_loss_values.append(loss.detach().numpy())
-                test_loss_values.append(test_loss.detach().numpy())
+                train_loss_values.append(Tensor.cpu(loss).detach().numpy())
+                test_loss_values.append(Tensor.cpu(test_loss).detach().numpy())
                 print(f"Epoch: {epoch} | MAE Train Loss: {loss} | MAE Test Loss: {test_loss}")
 
         # Plot the loss curve
@@ -200,7 +203,8 @@ def main(args):
 
     except Exception as e:
         print(f"An unexpected exception occured of type {type(e)}")
-        print(f"Arguments in .args: {e.args}")
+        print("*** print_exception:")
+        print_exception(e, limit=2, file=sys.stdout)
 
 if __name__ == "__main__":
     args = parse_args()
