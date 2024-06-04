@@ -19,19 +19,17 @@ from helper_functions import accuracy_fn, set_device, print_train_time, set_seed
 from models.model_cls import FashionMNISTModelV0, FashionMNISTModelV1, FashionMNISTModelV2
 from prepare_load_data import FashionMNIST_data
 
-"""
-An unexpected exception occured of type <class 'RuntimeError'>
-*** print_exception:
-Traceback (most recent call last):
-  File "C:\Users\Karmy\sunash\zero-to-mastery-pytorch-tutorial\computer_vision.py", line 310, in main
-    model_results = eval_model(
-                    ^^^^^^^^^^^
-  File "C:\Users\Karmy\sunash\zero-to-mastery-pytorch-tutorial\computer_vision.py", line 143, in eval_model        
-    y_pred = model(X)
-             ^^^^^^^^
-RuntimeError: Expected all tensors to be on the same device, but found at least two devices, 
-cuda:0 and cpu! (when checking argument for argument mat1 in method wrapper_CUDA_addmm)
-"""
+
+# An unexpected exception occured of type <class 'RuntimeError'>
+# Traceback (most recent call last):
+# File "C:\Users\Karmy\sunash\zero-to-mastery-pytorch-tutorial\computer_vision.py", line 310, in main
+#    model_results = eval_model(
+#                    ^^^^^^^^^^^
+#  File "C:\Users\Karmy\sunash\zero-to-mastery-pytorch-tutorial\computer_vision.py", line 143, in eval_model        
+#    y_pred = model(X)
+#             ^^^^^^^^
+# RuntimeError: Expected all tensors to be on the same device, but found at least two devices, 
+# cuda:0 and cpu! (when checking argument for argument mat1 in method wrapper_CUDA_addmm)
 
 PROG_NAME = "Train/test Computer vision model"
 PROG_DESC = "Section 03 PyTorch Computer vision"
@@ -341,7 +339,7 @@ def main(args):
         print(f"Test sample image shape: {test_samples[0].shape}\nTest sample label: {test_labels[0]} ({class_names[test_labels[0]]})")
 
         # Make predictions on test samples
-        pred_probs = make_predictions(model=model, data=test_samples)
+        pred_probs = make_predictions(model=model, data=test_samples, device=device)
         print(f"Fist two prediction probablities: {pred_probs[:2]}")
         # Get prediction labels
         pred_classes = pred_probs.argmax(dim=1)
