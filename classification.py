@@ -61,7 +61,7 @@ def main(args) -> None:
     MODEL = args.model
     EPOCHS = args.epochs
     EPOCH_STEP = args.epoch_step
-    LOAD_MODEL = False # args.load_model
+    LOAD_MODEL = args.load_model
     SAVE = args.save
 
     try:
@@ -123,6 +123,7 @@ def main(args) -> None:
         X_train, y_train = X_train.to(device), y_train.to(device)
         X_test, y_test = X_test.to(device), y_test.to(device)
 
+        test_pred = 0 # variable to track test predictions
         # Training and evaluating loop
         for epoch in range(epochs):
             # Training
@@ -192,13 +193,16 @@ def main(args) -> None:
                 print(f"Model on device:\n{next(loaded_model.parameters()).device}")
 
                 # Make inferences on loaded model
+                loaded_model_preds = 0  # variable to hold loaded_model predictions
                 loaded_model.eval()
                 with torch.inference_mode():
-                    loaded_model_preds = loaded_model(X_test)
+                    # Forward pass
+                    loaded_model_logits = loaded_model(X_test).squeeze()
+                    loaded_model_preds = torch.round(torch.sigmoid(loaded_model_logits))
 
                 # Compare previous model preds with loaded model preds (should be same)
                 print("Are the predictions from previous and loaded model the same? ")
-                print(f"{y_preds == loaded_model_preds}")
+                print(f"{test_pred == loaded_model_preds}")
             else:
                 print(f"Could not load model {LOAD_MODEL}")
 
