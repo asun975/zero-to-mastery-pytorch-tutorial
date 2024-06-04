@@ -32,6 +32,7 @@ Traceback (most recent call last):
 RuntimeError: Expected all tensors to be on the same device, but found at least two devices, 
 cuda:0 and cpu! (when checking argument for argument mat1 in method wrapper_CUDA_addmm)
 """
+
 PROG_NAME = "Train/test Computer vision model"
 PROG_DESC = "Section 03 PyTorch Computer vision"
 # TODO: remove hardcoded names, load settings for saved models
@@ -246,6 +247,7 @@ def main(args):
             batch_size=BATCH_SIZE,
             shuffle=False
         )
+
         """# Print Dataloader info (comment out to skip)
         print(f"Dataloaders: {train_dataloader, test_dataloader}")
         print(f"Length of train dataloader: {len(train_dataloader)} batches of {BATCH_SIZE}")
