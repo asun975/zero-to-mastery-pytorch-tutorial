@@ -23,10 +23,10 @@ from prepare_load_data import FashionMNIST_data
 An unexpected exception occured of type <class 'RuntimeError'>
 *** print_exception:
 Traceback (most recent call last):
-  File "C:\Users\Karmy\sunash\zero-to-mastery-pytorch-tutorial\computer_vision.py", line 310, in main
+  File "zero-to-mastery-pytorch-tutorial\computer_vision.py", line 310, in main
     model_results = eval_model(
                     ^^^^^^^^^^^
-  File "C:\Users\Karmy\sunash\zero-to-mastery-pytorch-tutorial\computer_vision.py", line 143, in eval_model        
+  File "zero-to-mastery-pytorch-tutorial\computer_vision.py", line 143, in eval_model        
     y_pred = model(X)
              ^^^^^^^^
 RuntimeError: Expected all tensors to be on the same device, but found at least two devices, 
